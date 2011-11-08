@@ -21,7 +21,7 @@
    <feature url="features/edu.uci.lighthouse.plugin_1.0.6.jar" id="edu.uci.lighthouse.plugin" version="1.0.6">
       <category name="lh.collaboration"/>
    </feature>
-   <feature url="features/Q_A_Feature_1.0.0.201111071708.jar" id="Q_A_Feature" version="1.0.0.201111071708">
+   <feature url="features/Q_A_Feature_1.0.0.201111071842.jar" id="Q_A_Feature" version="1.0.0.201111071842">
       <category name="QandAplugin"/>
    </feature>
    <category-def name="lh.collaboration" label="Collaboration"/>
