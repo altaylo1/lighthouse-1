@@ -2,7 +2,7 @@
 <feature
       id="edu.uci.lighthouse.plugin"
       label="Lighthouse Plug-in"
-      version="1.0.6"
+      version="1.0.7"
       provider-name="UC Irvine"
       plugin="edu.uci.lighthouse.core">
 
@@ -21,10 +21,6 @@
    <url>
       <update label="Lighthouse Update Site" url="http://calico.ics.uci.edu/~lighthouse/updates/site.xml"/>
    </url>
-
-   <includes
-         id="org.eclipse.zest.sdk"
-         version="0.0.0"/>
 
    <requires>
       <import plugin="org.eclipse.ui"/>
@@ -52,7 +48,7 @@
          id="org.apache.log4j"
          download-size="0"
          install-size="0"
-         version="1.2.13.v200903072027"
+         version="0.0.0"
          unpack="false"/>
 
    <plugin
@@ -107,6 +103,13 @@
 
    <plugin
          id="edu.uci.lighthouse.services"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="edu.uci.lighthouse.LighthouseQandAThreads"
          download-size="0"
          install-size="0"
          version="0.0.0"
