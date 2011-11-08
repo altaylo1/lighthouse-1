@@ -19,7 +19,7 @@
    </license>
 
    <url>
-      <update label="Lighthouse Update Site" url="http://calico.ics.uci.edu/~lighthouse/updates/site.xml"/>
+      <update label="Lighthouse Update Site" url="http://calico.ics.uci.edu/~lighthouse/calicoDistrib/site.xml"/>
    </url>
 
    <requires>
