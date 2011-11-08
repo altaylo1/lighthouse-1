@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/edu.uci.lighthouse.plugin_1.0.6.jar" id="edu.uci.lighthouse.plugin" version="1.0.6">
-      <category name="lh.collaboration"/>
-   </feature>
    <feature url="features/com.sun.jna_3.2.7.jar" id="com.sun.jna" version="3.2.7">
       <category name="lh.subclipse"/>
    </feature>
@@ -21,6 +18,13 @@
    <feature url="features/org.tigris.subversion.clientadapter.svnkit.feature_1.6.12.jar" id="org.tigris.subversion.clientadapter.svnkit.feature" version="1.6.12">
       <category name="lh.subclipse"/>
    </feature>
+   <feature url="features/edu.uci.lighthouse.plugin_1.0.6.jar" id="edu.uci.lighthouse.plugin" version="1.0.6">
+      <category name="lh.collaboration"/>
+   </feature>
+   <feature url="features/Q_A_Feature_1.0.0.201111071708.jar" id="Q_A_Feature" version="1.0.0.201111071708">
+      <category name="QandAplugin"/>
+   </feature>
    <category-def name="lh.collaboration" label="Collaboration"/>
    <category-def name="lh.subclipse" label="Subclipse (required)"/>
+   <category-def name="QandAplugin" label="QandAplugin"/>
 </site>
