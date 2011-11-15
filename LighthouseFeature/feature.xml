@@ -34,7 +34,7 @@
       <import plugin="org.eclipse.team.core" version="3.4.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.swt" version="3.4.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.runtime" version="3.4.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.draw2d" version="3.4.0" match="greaterOrEqual"/>
+      
       <import plugin="org.eclipse.jdt.ui" version="3.4.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.zest.core" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.zest.layouts" version="1.0.0" match="greaterOrEqual"/>
