@@ -42,8 +42,8 @@ public class LighthouseAuthor implements Serializable{
 	
 	@Id
 	private String name;
-	
-	@OneToMany(cascade = CascadeType.ALL)
+	 /**@author lee*/
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<DOIforClass> doiModel;
 	 
 	public LighthouseAuthor(String name) {
@@ -111,6 +111,9 @@ public class LighthouseAuthor implements Serializable{
 		doiModel.add(doi);
 	}
 
+	public int getInterest(LighthouseClass clazz){
+		return 0;
+	}
 
 
 

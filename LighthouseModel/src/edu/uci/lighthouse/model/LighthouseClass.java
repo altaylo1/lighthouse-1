@@ -51,8 +51,8 @@ public class LighthouseClass extends LighthouseEntity {
 	/**@author lee*/
 	 @OneToOne(cascade = CascadeType.ALL)
 	private LHforum forum;
-	 
-	 @OneToMany(cascade = CascadeType.ALL)
+	 /**@author lee*/
+	 @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private java.util.Set<LighthouseAuthor> interestedAuthors;
 	
 	

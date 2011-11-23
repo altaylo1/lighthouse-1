@@ -114,12 +114,15 @@ public class ExpertiseFigure extends CompartmentFigure {
 
 					Collection<LighthouseAuthor> authors = clazz.getInterestedAuthors();
 					for(LighthouseAuthor interestedAuthor: authors){
+						
+						int interest = interestedAuthor.getInterest(clazz);
+						
 						String name = interestedAuthor.getName();
 						
 					   Image icon = AbstractUIPlugin.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
 						"/icons/expert_contrib.png").createImage();
 				
-				         OneExpertPanel oep = new OneExpertPanel(icon,name, "top contributor");
+				         OneExpertPanel oep = new OneExpertPanel(icon,name, interest);
 				 		panel.add(oep);
 						
 						//Label nameLabel2 = new Label(name);
@@ -137,10 +140,10 @@ public class ExpertiseFigure extends CompartmentFigure {
 	private class OneExpertPanel extends Panel{
 		
 		String name;
-		String metric;
+		int interest;
 		Image icon;
 		
-		public OneExpertPanel(Image icon, String name, String metric){
+		public OneExpertPanel(Image icon, String name, int interest){
 			GridLayout layout = new GridLayout();
 			layout.horizontalSpacing = 0;
 			layout.verticalSpacing = 0;
@@ -150,7 +153,7 @@ public class ExpertiseFigure extends CompartmentFigure {
 			this.setLayoutManager(layout);
 			
 			this.icon = icon;
-			this.metric = metric;
+			this.interest = interest;
 			this.name = name;
 			
 			ImageFigure imageFigure = new ImageFigure(icon);
@@ -158,6 +161,9 @@ public class ExpertiseFigure extends CompartmentFigure {
 			
 			Label nameLabel = new Label(name);
 			this.add(nameLabel);
+			
+			Label interestLabel = new Label(interest+"");
+			this.add(interestLabel);
 
 		
 		}

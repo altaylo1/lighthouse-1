@@ -47,6 +47,7 @@ import edu.uci.lighthouse.core.dbactions.DatabaseActionsBuffer;
 import edu.uci.lighthouse.core.dbactions.IDatabaseAction;
 import edu.uci.lighthouse.core.dbactions.JobDecoratorAction;
 import edu.uci.lighthouse.core.dbactions.OpenFileAction;
+import edu.uci.lighthouse.core.dbactions.SaveAuthorAction;
 import edu.uci.lighthouse.core.dbactions.SaveUserAction;
 import edu.uci.lighthouse.core.dbactions.pull.CheckoutAction;
 import edu.uci.lighthouse.core.dbactions.pull.SynchronizeModelAction;
@@ -152,9 +153,14 @@ IPluginListener, IPreferencesChangeListener /*, Runnable, IPropertyChangeListene
 		ModelUtility mu = new ModelUtility();
 		LighthouseAuthor author = ModelUtility.getAuthor();
 		clazz.addInterestedAuthor(author);
+		
+		author.addDOIforClass(clazz, 1);
 
 		buffer
 		.offer(new OpenFileAction(clazz));
+		
+		buffer
+		.offer(new SaveAuthorAction(author));
 		
 		LighthouseEvent lh = new LighthouseEvent(LighthouseEvent.TYPE.CUSTOM,
 				author, clazz);
