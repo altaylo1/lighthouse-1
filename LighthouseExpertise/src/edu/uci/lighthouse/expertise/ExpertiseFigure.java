@@ -112,9 +112,9 @@ public class ExpertiseFigure extends CompartmentFigure {
 				if(entity instanceof LighthouseClass){
 					LighthouseClass clazz = (LighthouseClass)entity;
 
-					Collection<String> authors = clazz.getInterestedAuthors();
-					for(String interestedAuthor: authors){
-						String name = interestedAuthor;
+					Collection<LighthouseAuthor> authors = clazz.getInterestedAuthors();
+					for(LighthouseAuthor interestedAuthor: authors){
+						String name = interestedAuthor.getName();
 						
 					   Image icon = AbstractUIPlugin.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
 						"/icons/expert_contrib.png").createImage();

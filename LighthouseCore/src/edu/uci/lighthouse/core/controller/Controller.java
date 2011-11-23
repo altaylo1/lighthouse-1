@@ -151,7 +151,7 @@ IPluginListener, IPreferencesChangeListener /*, Runnable, IPropertyChangeListene
 		
 		ModelUtility mu = new ModelUtility();
 		LighthouseAuthor author = ModelUtility.getAuthor();
-		clazz.addInterestedAuthor(author.getName());
+		clazz.addInterestedAuthor(author);
 
 		buffer
 		.offer(new OpenFileAction(clazz));
