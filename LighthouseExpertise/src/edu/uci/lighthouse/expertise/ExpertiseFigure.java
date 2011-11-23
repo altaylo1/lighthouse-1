@@ -15,6 +15,7 @@ package edu.uci.lighthouse.expertise;
 
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -58,7 +59,6 @@ import org.tigris.subversion.svnclientadapter.ISVNClientAdapter;
 
 public class ExpertiseFigure extends CompartmentFigure {
 	private int NUM_COLUMNS = 1;
-	private List<LighthouseAuthor> cacheOfAuthors;
 	
 	MODE mode;
 	private ExpertisePanel panel;
@@ -76,7 +76,7 @@ public class ExpertiseFigure extends CompartmentFigure {
 		GridData data = new GridData(SWT.FILL,SWT.FILL,true,true);
 		this.add(panel, data);
 		
-		Image icon = AbstractUIPlugin.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
+	/*	Image icon = AbstractUIPlugin.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
 				"/icons/expert_contrib.png").createImage();
 		
 		OneExpertPanel oep = new OneExpertPanel(icon,"fred", "top contributor");
@@ -86,11 +86,11 @@ public class ExpertiseFigure extends CompartmentFigure {
 		OneExpertPanel oep2 = new OneExpertPanel(icon2, "fred","originator");
 		Image icon3 = AbstractUIPlugin.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
 		"/icons/expert_user.png").createImage();
-		OneExpertPanel oep3 = new OneExpertPanel(icon3, "fred","top user");
+		OneExpertPanel oep3 = new OneExpertPanel(icon3, "fred","top user");*/
 		
-		panel.add(oep);
-		panel.add(oep2);
-		panel.add(oep3);
+	//	panel.add(oep);
+	//	panel.add(oep2);
+	//	panel.add(oep3);
 
 	//	IWorkspace workspace = ResourcesPlugin.getWorkspace();
 	//	IWorkspaceRoot root = workspace.getRoot();
@@ -106,24 +106,29 @@ public class ExpertiseFigure extends CompartmentFigure {
 	
 	public void populate(MODE mode) {
 		this.mode = mode;
-		try {
-			cacheOfAuthors = new LHAuthorDAO().list();
-			for(LighthouseAuthor author: cacheOfAuthors){
-				String authorName = author.getName();
-				Label nameLabel = new Label(authorName);
+
+
 				LighthouseEntity entity = this.getUmlClass();
 				if(entity instanceof LighthouseClass){
 					LighthouseClass clazz = (LighthouseClass)entity;
-					
+
+					Collection<String> authors = clazz.getInterestedAuthors();
+					for(String interestedAuthor: authors){
+						String name = interestedAuthor;
+						
+					   Image icon = AbstractUIPlugin.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
+						"/icons/expert_contrib.png").createImage();
+				
+				         OneExpertPanel oep = new OneExpertPanel(icon,name, "top contributor");
+				 		panel.add(oep);
+						
+						//Label nameLabel2 = new Label(name);
+						//this.add(nameLabel2);
+
+					}
 					
 				}
-			//	panel.add(nameLabel);
-			}
-			
-		} catch (JPAException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
 		
 
 		

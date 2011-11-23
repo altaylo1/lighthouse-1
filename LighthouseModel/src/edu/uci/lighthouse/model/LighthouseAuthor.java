@@ -14,9 +14,13 @@
 package edu.uci.lighthouse.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 
 /**
  * This is the class that represents each developer
@@ -29,6 +33,9 @@ public class LighthouseAuthor implements Serializable{
 	@Id
 	private String name;
 	
+	// @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	//	ArrayList<LighthouseClass> interestedClasses = new ArrayList<LighthouseClass>();
+	 
 	public LighthouseAuthor(String name) {
 		this.name = name;
 	}

@@ -46,12 +46,14 @@ import edu.uci.lighthouse.core.dbactions.CreateNewDatabaseConnectionAction;
 import edu.uci.lighthouse.core.dbactions.DatabaseActionsBuffer;
 import edu.uci.lighthouse.core.dbactions.IDatabaseAction;
 import edu.uci.lighthouse.core.dbactions.JobDecoratorAction;
+import edu.uci.lighthouse.core.dbactions.OpenFileAction;
 import edu.uci.lighthouse.core.dbactions.SaveUserAction;
 import edu.uci.lighthouse.core.dbactions.pull.CheckoutAction;
 import edu.uci.lighthouse.core.dbactions.pull.SynchronizeModelAction;
 import edu.uci.lighthouse.core.dbactions.pull.UpdateAction;
 import edu.uci.lighthouse.core.dbactions.push.CommitAction;
 import edu.uci.lighthouse.core.dbactions.push.FileEventAction;
+import edu.uci.lighthouse.core.dbactions.push.OpenEventAction;
 import edu.uci.lighthouse.core.listeners.IJavaFileStatusListener;
 import edu.uci.lighthouse.core.listeners.ILHclassPluginExtensionObserver;
 import edu.uci.lighthouse.core.listeners.IPluginListener;
@@ -63,13 +65,19 @@ import edu.uci.lighthouse.core.preferences.PreferencesNotifier;
 import edu.uci.lighthouse.core.util.ModelUtility;
 import edu.uci.lighthouse.core.util.WorkbenchUtility;
 
+
+
+import edu.uci.lighthouse.model.LighthouseAuthor;
+import edu.uci.lighthouse.model.LighthouseClass;
 import edu.uci.lighthouse.model.LighthouseDelta;
+import edu.uci.lighthouse.model.LighthouseEntity;
 import edu.uci.lighthouse.model.LighthouseEvent;
 import edu.uci.lighthouse.model.LighthouseFile;
 import edu.uci.lighthouse.model.LighthouseFileManager;
 import edu.uci.lighthouse.model.LighthouseModel;
 import edu.uci.lighthouse.model.LighthouseModelManager;
 import edu.uci.lighthouse.parser.ParserException;
+
 
 public class Controller implements ISVNEventListener, IJavaFileStatusListener,
 IPluginListener, IPreferencesChangeListener /*, Runnable, IPropertyChangeListener*/ {
@@ -136,7 +144,31 @@ IPluginListener, IPreferencesChangeListener /*, Runnable, IPropertyChangeListene
 	
 	@Override
 	public void open(final IFile iFile, boolean hasErrors) {
-		// DO NOTHING
+		String className = ModelUtility.getClassFullyQualifiedName(iFile);
+		LighthouseModelManager manager  = new LighthouseModelManager(LighthouseModel.getInstance());
+		LighthouseClass clazz = (LighthouseClass) manager.getEntity(className);
+		if(clazz != null){
+		
+		ModelUtility mu = new ModelUtility();
+		LighthouseAuthor author = ModelUtility.getAuthor();
+		clazz.addInterestedAuthor(author.getName());
+
+		buffer
+		.offer(new OpenFileAction(clazz));
+		
+		LighthouseEvent lh = new LighthouseEvent(LighthouseEvent.TYPE.CUSTOM,
+				author, clazz);
+		
+		ArrayList<LighthouseEvent> listOfEvents = new ArrayList<LighthouseEvent>();
+		listOfEvents.add(lh);
+		
+		UpdateLighthouseModel.addEvents(listOfEvents);
+		ModelUtility.fireModificationsToUI(listOfEvents);
+		
+		OpenEventAction openEventAction = new OpenEventAction(listOfEvents);
+		buffer.offer(openEventAction);
+		
+		}
 	}
 
 	@Override

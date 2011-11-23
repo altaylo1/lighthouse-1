@@ -14,15 +14,22 @@
 package edu.uci.lighthouse.model;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.Platform;
+import org.hibernate.Hibernate;
+import org.hibernate.Session;
+import org.hibernate.annotations.CollectionOfElements;
 import org.hibernate.cfg.AnnotationConfiguration;
 import org.hibernate.cfg.Environment;
 
@@ -44,18 +51,27 @@ public class LighthouseClass extends LighthouseEntity {
 	/**@author lee*/
 	 @OneToOne(cascade = CascadeType.ALL)
 	private LHforum forum;
+	 
+	 @CollectionOfElements  (fetch= FetchType.EAGER)
+	private java.util.Set<String> interestedAuthors;
+	
+	
 	
 	protected LighthouseClass() {
 		this("");
 		forum = new LHforum();
+		
 	//	loadExtensions();
 	}
 
 	public LighthouseClass(String fqn) {
 		super(fqn);
 		forum = new LHforum();
+		
 	//	loadExtensions();
 	}
+	
+
 	
 	public boolean isAnonymous(){
 		return getFullyQualifiedName().matches("(\\w+\\.)*(\\w+\\$)+\\d+");
@@ -88,5 +104,21 @@ public class LighthouseClass extends LighthouseEntity {
 	public LHforum getForum() {
 		return forum;
 	}
+
+	public void setInterestedAuthors(java.util.Set interestedAuthors) {
+		this.interestedAuthors = interestedAuthors;
+	}
+
+	public java.util.Set getInterestedAuthors() {
+		return interestedAuthors;
+	}
+
+	public void addInterestedAuthor(String author){
+		if(this.interestedAuthors == null)
+			interestedAuthors = new java.util.HashSet<String>();
+		
+		this.interestedAuthors.add(author);
+	}
+
 	
 }
