@@ -52,8 +52,8 @@ public class LighthouseClass extends LighthouseEntity {
 	 @OneToOne(cascade = CascadeType.ALL)
 	private LHforum forum;
 	 
-	 @CollectionOfElements  (fetch= FetchType.EAGER)
-	private java.util.Set<String> interestedAuthors;
+	 @OneToMany(cascade = CascadeType.ALL)
+	private java.util.Set<LighthouseAuthor> interestedAuthors;
 	
 	
 	
@@ -113,9 +113,9 @@ public class LighthouseClass extends LighthouseEntity {
 		return interestedAuthors;
 	}
 
-	public void addInterestedAuthor(String author){
+	public void addInterestedAuthor(LighthouseAuthor author){
 		if(this.interestedAuthors == null)
-			interestedAuthors = new java.util.HashSet<String>();
+			interestedAuthors = new java.util.HashSet<LighthouseAuthor>();
 		
 		this.interestedAuthors.add(author);
 	}
