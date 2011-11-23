@@ -154,7 +154,7 @@ IPluginListener, IPreferencesChangeListener /*, Runnable, IPropertyChangeListene
 		LighthouseAuthor author = ModelUtility.getAuthor();
 		clazz.addInterestedAuthor(author);
 		
-		author.addDOIforClass(clazz, 1);
+		author.addToInterest(clazz, 1);
 
 		buffer
 		.offer(new OpenFileAction(clazz));
@@ -168,11 +168,14 @@ IPluginListener, IPreferencesChangeListener /*, Runnable, IPropertyChangeListene
 		ArrayList<LighthouseEvent> listOfEvents = new ArrayList<LighthouseEvent>();
 		listOfEvents.add(lh);
 		
+		OpenEventAction openEventAction = new OpenEventAction(listOfEvents);
+		buffer.offer(openEventAction);
+		
 		UpdateLighthouseModel.addEvents(listOfEvents);
 		ModelUtility.fireModificationsToUI(listOfEvents);
 		
-		OpenEventAction openEventAction = new OpenEventAction(listOfEvents);
-		buffer.offer(openEventAction);
+
+		
 		
 		}
 	}

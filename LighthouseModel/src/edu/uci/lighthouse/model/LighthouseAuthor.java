@@ -25,8 +25,10 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.MapKey;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import org.hibernate.annotations.CollectionOfElements;
 
@@ -43,15 +45,17 @@ public class LighthouseAuthor implements Serializable{
 	@Id
 	private String name;
 	 /**@author lee*/
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Set<DOIforClass> doiModel;
 	 
 	public LighthouseAuthor(String name) {
 		this.name = name;
+		doiModel = new HashSet<DOIforClass>();
 	}
 
 	protected LighthouseAuthor() {
 		this("");
+		doiModel = new HashSet<DOIforClass>();
 	}
 
 	public String getName() {
@@ -100,19 +104,44 @@ public class LighthouseAuthor implements Serializable{
 		return doiModel;
 	}
 	
-	public void addDOIforClass(LighthouseClass clazz, int interest){
-		DOIforClass doi = new DOIforClass();
-		doi.setClazz(clazz);
-		doi.setInterest(interest);
+	
+	/**
+	 * If no interest exists will add 0+amount as new interest to this clazz
+	 * @param clazz
+	 * @param amount
+	 */
+	public void addToInterest(LighthouseClass clazz, int amount){
+
+		for(DOIforClass doiForClass: doiModel){
+			if(doiForClass.getClazz().getFullyQualifiedName().equals(clazz.getFullyQualifiedName())){
+
+				int total = doiForClass.getInterest()+amount;
+				doiForClass.setInterest(total);
+				return;
+			}
+		}
 		
-		if(doiModel == null)
-			doiModel = new HashSet<DOIforClass>();
+		System.out.println("could not find"+clazz.getFullyQualifiedName());
+			DOIforClass doi = new DOIforClass(clazz, this);
+			doi.setInterest(amount);
+			
+			doiModel.add(doi);
 		
-		doiModel.add(doi);
 	}
 
+	/**
+	 * return -9 if no interest can be found. 
+	 * @param clazz
+	 * @return
+	 */
 	public int getInterest(LighthouseClass clazz){
-		return 0;
+	
+		for(DOIforClass doiForClass: doiModel){
+			if(doiForClass.getClazz().getFullyQualifiedName().equals(clazz.getFullyQualifiedName())){
+				return doiForClass.getInterest();
+			}
+		}
+		return -9;
 	}
 
 

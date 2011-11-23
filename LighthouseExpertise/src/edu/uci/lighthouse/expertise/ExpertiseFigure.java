@@ -147,7 +147,7 @@ public class ExpertiseFigure extends CompartmentFigure {
 			GridLayout layout = new GridLayout();
 			layout.horizontalSpacing = 0;
 			layout.verticalSpacing = 0;
-			layout.numColumns = 2;
+			layout.numColumns = 3;
 			layout.marginHeight = 0;
 			layout.marginWidth = 0;
 			this.setLayoutManager(layout);
@@ -159,10 +159,10 @@ public class ExpertiseFigure extends CompartmentFigure {
 			ImageFigure imageFigure = new ImageFigure(icon);
 			this.add(imageFigure);
 			
-			Label nameLabel = new Label(name);
+			Label nameLabel = new Label(" "+name);
 			this.add(nameLabel);
 			
-			Label interestLabel = new Label(interest+"");
+			Label interestLabel = new Label("" +interest);
 			this.add(interestLabel);
 
 		
