@@ -59,6 +59,8 @@ public class LighthouseQAEventSubscriber  implements ISubscriber{
 						if(clazz instanceof LighthouseClass){
 							LighthouseClass theClazz = (LighthouseClass)clazz;
 							theClazz.setForum(((LighthouseClass)entity).getForum());
+							//TEMPORARY!!!!
+							theClazz.setDoiModel(((LighthouseClass)entity).getDoiModel());
 						}
 						System.out.println("[Rebuilding figure]");
 						//rebuild figure
