@@ -17,6 +17,7 @@ package edu.uci.lighthouse.expertise;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.Resource;
 
@@ -50,6 +51,7 @@ import edu.uci.lighthouse.core.util.ModelUtility;
 import edu.uci.lighthouse.model.LighthouseAuthor;
 import edu.uci.lighthouse.model.LighthouseClass;
 import edu.uci.lighthouse.model.LighthouseEntity;
+import edu.uci.lighthouse.model.expertise.DOIforClass;
 import edu.uci.lighthouse.model.jpa.JPAException;
 import edu.uci.lighthouse.model.jpa.LHAuthorDAO;
 import edu.uci.lighthouse.ui.figures.CompartmentFigure;
@@ -118,12 +120,13 @@ public class ExpertiseFigure extends CompartmentFigure {
 				if(entity instanceof LighthouseClass){
 					LighthouseClass clazz = (LighthouseClass)entity;
 
-					Collection<LighthouseAuthor> authors = clazz.getInterestedAuthors();
-					for(LighthouseAuthor interestedAuthor: authors){
+					Set<DOIforClass> doiModel= clazz.getDoiModel();
+					for(DOIforClass doiForClass: doiModel){
 						
-						int interest = interestedAuthor.getInterest(clazz);
 						
-						String name = interestedAuthor.getName();
+						
+						String name = doiForClass.getAuthorname();
+						int interest = doiForClass.getInterest();
 						
 					   Image icon = AbstractUIPlugin.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
 						"/icons/expert_contrib.png").createImage();

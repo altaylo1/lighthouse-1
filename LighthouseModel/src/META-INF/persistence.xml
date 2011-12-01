@@ -21,6 +21,7 @@
 
 		<class>edu.uci.lighthouse.model.repository.LighthouseRepositoryEvent</class>
 
+		<class>edu.uci.lighthouse.model.expertise.DOIforClass</class>
 		<class>edu.uci.lighthouse.model.expertise.LighthouseQuestion</class>
 		
  		<class>edu.uci.lighthouse.model.QAforums.ForumThread</class>
@@ -30,7 +31,7 @@
  		<class>edu.uci.lighthouse.model.QAforums.Solution</class>
  		<class>edu.uci.lighthouse.model.QAforums.TeamMember</class>
  		
- 		<class>edu.uci.lighthouse.model.expertise.DOIforClass</class>
+ 		
  		
 		
 		<properties>

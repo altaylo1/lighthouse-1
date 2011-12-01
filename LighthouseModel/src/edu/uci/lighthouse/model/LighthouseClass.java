@@ -15,7 +15,9 @@ package edu.uci.lighthouse.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -37,6 +39,7 @@ import org.hibernate.cfg.Environment;
 import edu.uci.lighthouse.LHmodelExtensions.ClassPluginLoader;
 import edu.uci.lighthouse.LHmodelExtensions.LHclassPluginExtension;
 import edu.uci.lighthouse.model.QAforums.LHforum;
+import edu.uci.lighthouse.model.expertise.DOIforClass;
 
 
 
@@ -52,10 +55,10 @@ public class LighthouseClass extends LighthouseEntity {
 	/**@author lee*/
 	 @OneToOne(cascade = CascadeType.ALL)
 	private LHforum forum;
+
 	 /**@author lee*/
-	 @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	private java.util.Set<LighthouseAuthor> interestedAuthors;
-	
+		@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+		private Set<DOIforClass> doiModel = new HashSet<DOIforClass>();
 	
 	
 	protected LighthouseClass() {
@@ -106,19 +109,55 @@ public class LighthouseClass extends LighthouseEntity {
 		return forum;
 	}
 
-	public void setInterestedAuthors(java.util.Set interestedAuthors) {
-		this.interestedAuthors = interestedAuthors;
+	
+	public void setDoiModel(Set<DOIforClass> doiModel) {
+		this.doiModel = doiModel;
 	}
 
-	public java.util.Set getInterestedAuthors() {
-		return interestedAuthors;
+	public Set<DOIforClass> getDoiModel() {
+		return doiModel;
 	}
+	
+	
+	/**
+	 * 
+	 * @param clazz
+	 * @param amount
+	 */
+	public void addToInterest(LighthouseAuthor author, int amount){
+		System.out.println("[add to interest]"+doiModel.size());
+		for(DOIforClass doiForClass: doiModel){
+			System.out.println(doiForClass.getClassName() +"=?="+this.getFullyQualifiedName());
+			
+			if(doiForClass.getAuthorname().equals(author.getName())){
 
-	public void addInterestedAuthor(LighthouseAuthor author){
-		if(this.interestedAuthors == null)
-			interestedAuthors = new java.util.HashSet<LighthouseAuthor>();
+				int total = doiForClass.getInterest()+amount;
+				doiForClass.setInterest(total);
+				return;
+			}
+		}
 		
-		this.interestedAuthors.add(author);
+		System.out.println("could not find: "+author.getName());
+		DOIforClass doi = new DOIforClass(this.getFullyQualifiedName(), author.getName());
+		doi.setInterest(amount);
+		doiModel.add(doi);
+		
+	}
+
+	/**
+	 * return 0 if no interest can be found. 
+	 * @param clazz
+	 * @return
+	 */
+	public int getInterest(LighthouseAuthor author){
+		System.out.println("[get interest] "+doiModel.size());
+		for(DOIforClass doiForClass: doiModel){
+			
+			if(doiForClass.getAuthorname().equals(author.getName())){
+				return doiForClass.getInterest();
+			}
+		}
+		return 0;
 	}
 
 	

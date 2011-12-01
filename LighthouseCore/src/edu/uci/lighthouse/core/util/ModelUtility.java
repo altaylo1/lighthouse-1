@@ -252,6 +252,7 @@ public class ModelUtility {
 	
 	public static LighthouseAuthor getAuthor() {
 		if (author == null){
+			System.out.println("AUTHOR IS NULL!!");
 			Properties userSettings = UserPreferences.getUserSettings();
 			String userName = userSettings.getProperty(UserPreferences.USERNAME);
 			author = new LighthouseAuthor(userName);
