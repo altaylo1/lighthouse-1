@@ -68,6 +68,7 @@ import edu.uci.lighthouse.core.util.WorkbenchUtility;
 
 
 
+import edu.uci.lighthouse.model.INotificationSubscriber;
 import edu.uci.lighthouse.model.LighthouseAuthor;
 import edu.uci.lighthouse.model.LighthouseClass;
 import edu.uci.lighthouse.model.LighthouseDelta;
@@ -77,6 +78,7 @@ import edu.uci.lighthouse.model.LighthouseFile;
 import edu.uci.lighthouse.model.LighthouseFileManager;
 import edu.uci.lighthouse.model.LighthouseModel;
 import edu.uci.lighthouse.model.LighthouseModelManager;
+import edu.uci.lighthouse.model.OpenNotification;
 import edu.uci.lighthouse.parser.ParserException;
 
 
@@ -99,6 +101,7 @@ IPluginListener, IPreferencesChangeListener /*, Runnable, IPropertyChangeListene
 	private static Controller controller;
 	/**@author lee*/
 	ArrayList<ISubscriber> subscribers = new ArrayList<ISubscriber>();
+	ArrayList<INotificationSubscriber> notificationSubscribers = new ArrayList<INotificationSubscriber>();
 	
 	private Controller(){}
 	
@@ -145,39 +148,16 @@ IPluginListener, IPreferencesChangeListener /*, Runnable, IPropertyChangeListene
 	
 	@Override
 	public void open(final IFile iFile, boolean hasErrors) {
+		
 		String className = ModelUtility.getClassFullyQualifiedName(iFile);
-		LighthouseModelManager manager  = new LighthouseModelManager(LighthouseModel.getInstance());
-		LighthouseClass clazz = (LighthouseClass) manager.getEntity(className);
-		if(clazz != null){
-		
-		ModelUtility mu = new ModelUtility();
-		LighthouseAuthor author = ModelUtility.getAuthor();
-		clazz.addInterestedAuthor(author);
-		
-		author.addToInterest(clazz, 1);
-
-		buffer
-		.offer(new OpenFileAction(clazz));
-		
-		buffer
-		.offer(new SaveAuthorAction(author));
-		
-		LighthouseEvent lh = new LighthouseEvent(LighthouseEvent.TYPE.CUSTOM,
-				author, clazz);
-		
-		ArrayList<LighthouseEvent> listOfEvents = new ArrayList<LighthouseEvent>();
-		listOfEvents.add(lh);
-		
-		OpenEventAction openEventAction = new OpenEventAction(listOfEvents);
-		buffer.offer(openEventAction);
-		
-		UpdateLighthouseModel.addEvents(listOfEvents);
-		ModelUtility.fireModificationsToUI(listOfEvents);
-		
-
-		
-		
+		for(INotificationSubscriber subscriber: this.getInstance().getNotificatoinSubscribers()){
+			
+			OpenNotification notification = new OpenNotification(className);
+			subscriber.receive(notification);
 		}
+		
+
+
 	}
 
 	@Override
@@ -406,6 +386,13 @@ IPluginListener, IPreferencesChangeListener /*, Runnable, IPropertyChangeListene
 		return subscribers;
 	}
 	
+	public List<INotificationSubscriber> getNotificatoinSubscribers(){
+		return this.notificationSubscribers;
+	}
+	
+	public void addNotificationSubscriber(INotificationSubscriber sub){
+		this.notificationSubscribers.add(sub);
+	}
 
 
 

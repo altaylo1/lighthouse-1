@@ -16,6 +16,7 @@ Require-Bundle: org.eclipse.ui,
  edu.uci.lighthouse.ui;bundle-version="1.0.6"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Import-Package: org.tigris.subversion.subclipse.core,
+Import-Package: org.eclipse.zest.core.viewers,
+ org.tigris.subversion.subclipse.core,
  org.tigris.subversion.subclipse.ui,
  org.tigris.subversion.svnclientadapter

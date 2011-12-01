@@ -45,6 +45,7 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.tigris.subversion.subclipse.core.SVNProviderPlugin;
 import org.tigris.subversion.subclipse.ui.SVNUIPlugin;
 
+import edu.uci.lighthouse.core.controller.Controller;
 import edu.uci.lighthouse.core.util.ModelUtility;
 import edu.uci.lighthouse.model.LighthouseAuthor;
 import edu.uci.lighthouse.model.LighthouseClass;
@@ -62,6 +63,11 @@ public class ExpertiseFigure extends CompartmentFigure {
 	
 	MODE mode;
 	private ExpertisePanel panel;
+	
+	static{
+		ExpertiseSubscriber subscriber = new ExpertiseSubscriber();
+		Controller.getInstance().addNotificationSubscriber(subscriber);
+		}
 
 	public ExpertiseFigure() {
 		GridLayout layout = new GridLayout();

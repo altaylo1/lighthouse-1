@@ -29,4 +29,6 @@ import edu.uci.lighthouse.model.LighthouseEvent;
 public interface ISubscriber extends Serializable{
 
 	public void receive(List<LighthouseEvent> events);
+	
+	
 }
