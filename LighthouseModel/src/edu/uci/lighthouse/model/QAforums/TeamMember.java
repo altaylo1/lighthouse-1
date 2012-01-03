@@ -39,8 +39,7 @@ public class TeamMember implements Serializable{
 	private LighthouseAuthor author;
 	
 	@Id
-    @GeneratedValue
-    int id;
+    String  id;
 	
 	 @OneToMany (fetch=FetchType.EAGER, cascade = CascadeType.ALL)
 	Collection<Post> posts = new ArrayList<Post>();
@@ -49,6 +48,7 @@ public class TeamMember implements Serializable{
 	 
 	public TeamMember(LighthouseAuthor author){
 		this.setAuthor(author);
+		id = author.getName();
 	}
 	
 	public void respondToThread(ForumThread aThread) {

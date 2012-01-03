@@ -30,6 +30,7 @@ import edu.uci.lighthouse.model.LighthouseEntity;
 import edu.uci.lighthouse.model.LighthouseEvent;
 import edu.uci.lighthouse.model.LighthouseModel;
 import edu.uci.lighthouse.model.LighthouseModelManager;
+import edu.uci.lighthouse.model.QAforums.LHforum;
 //import edu.uci.lighthouse.ui.utils.GraphUtils;
 import edu.uci.lighthouse.ui.utils.GraphUtils;
 import edu.uci.lighthouse.ui.views.EmergingDesignView;
@@ -58,7 +59,11 @@ public class LighthouseQAEventSubscriber  implements ISubscriber{
 						
 						if(clazz instanceof LighthouseClass){
 							LighthouseClass theClazz = (LighthouseClass)clazz;
-							theClazz.setForum(((LighthouseClass)entity).getForum());
+							
+							LHforum forum = ((LighthouseClass)entity).getForum();
+							System.out.println("# of threads from event: "+forum.getThreads().size());
+							
+							theClazz.setForum(forum);
 							//TEMPORARY!!!!
 							theClazz.setDoiModel(((LighthouseClass)entity).getDoiModel());
 						}

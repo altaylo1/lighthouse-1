@@ -33,8 +33,7 @@ public class ForumThread extends Observable implements Serializable{
 	private static final long serialVersionUID = -4548381815095491038L;
 
 	@Id
-    @GeneratedValue
-    int id;
+    String id;
 	
 	 @OneToOne (cascade = CascadeType.ALL)
 	private Post rootQuestion;
@@ -53,6 +52,7 @@ public class ForumThread extends Observable implements Serializable{
 	public ForumThread(Post question) {
 		rootQuestion = question;
 		rootQuestion.setThread(this);
+		id = rootQuestion.getTeamMemberAuthor().getAuthor().getName()+rootQuestion.getPostTime();
 	}
 	
 	public void setRootQuestion(Post question){
@@ -120,6 +120,30 @@ public class ForumThread extends Observable implements Serializable{
 
 	public boolean isClosed() {
 		return closed;
+	}
+	
+	@Override
+	public int hashCode() {
+		
+		return this.getRootQuestion().hashCode()+this.getRootQuestion().getPostTime().hashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ForumThread other = (ForumThread) obj;
+		if (rootQuestion.equals(other.getRootQuestion())){
+			if(rootQuestion.getPostTime().equals(other.getRootQuestion().getPostTime())){
+				return true;
+			}
+			
+		}
+			return false;
 	}
 	
 

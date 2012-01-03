@@ -145,7 +145,7 @@ public class ThreadFigure extends CompartmentFigure {
 	    clazz = (LighthouseClass) le;
 		forum = clazz.getForum();
 		if(forum == null){
-			forum = new LHforum();
+			forum = new LHforum(clazz.getFullyQualifiedName());
 			clazz.setForum(forum);		
 		}
 	
@@ -163,7 +163,6 @@ public class ThreadFigure extends CompartmentFigure {
 		LighthouseAuthor author = ModelUtility.getAuthor();
 		tm = new LHthreadCreator(author);
 		pu = new PersistAndUpdate(clazz);
-		
 		
 		
 

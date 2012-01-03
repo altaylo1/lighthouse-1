@@ -33,6 +33,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 
 import edu.uci.lighthouse.LHmodelExtensions.LHclassPluginExtension;
+import edu.uci.lighthouse.model.LighthouseEntity;
 import edu.uci.lighthouse.model.jpa.AbstractDAO;
 
 @Entity
@@ -43,8 +44,7 @@ public class Post extends Observable implements Serializable {
 	private static final long serialVersionUID = -8635902581163644158L;
 
 	@Id
-	@GeneratedValue
-	int id;
+	String id;
 
 	private String subject;
 	private boolean question;
@@ -71,6 +71,7 @@ public class Post extends Observable implements Serializable {
 		this.message = message;
 		this.author = author;
 		postTime = AbstractDAO.getTimeOnServer();
+		id = postTime+" "+author.getAuthor().getName();
 	}
 
 	private void observeResponses() {
@@ -234,5 +235,31 @@ public class Post extends Observable implements Serializable {
 
 		return listOfResponses;
 	}
+	
+	@Override
+	public int hashCode() {
+		
+		return this.getMessage().hashCode()+this.getPostTime().hashCode()+this.author.getAuthor().hashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Post other = (Post) obj;
+		if (other.getMessage().equals(this.getMessage())){
+			if(other.getTeamMemberAuthor().getAuthor().equals(this.getTeamMemberAuthor().getAuthor())){{
+				if(other.getPostTime().equals(this.getPostTime()))
+					return true;
+			}
+		}
+		}
+			return false;
+	}
+		
 
 }

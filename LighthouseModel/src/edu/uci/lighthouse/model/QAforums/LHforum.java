@@ -16,9 +16,11 @@ package edu.uci.lighthouse.model.QAforums;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -40,15 +42,19 @@ public class LHforum extends LHclassPluginExtension implements Serializable{
 	private static final long serialVersionUID = -8791302461228282266L;
 
 	@Id
-    @GeneratedValue
-    int id;
+    String id;
+	
     
 	
 	@OneToMany (fetch=FetchType.EAGER, cascade = CascadeType.ALL)
-	Collection<ForumThread> threads = new ArrayList<ForumThread>();
+	Set<ForumThread> threads = new HashSet<ForumThread>();
 	
 	public LHforum(){
 		
+	}
+	
+	public LHforum(String className){
+		id = className+" "+threads.size();
 	}
 	
 	/**
@@ -120,7 +126,7 @@ public class LHforum extends LHclassPluginExtension implements Serializable{
 		forumChanged(new AddEvent<ForumThread,LHforum>(thread,this));
 	}
 	
-	public void setThreads(Collection<ForumThread> threads){
+	public void setThreads(Set<ForumThread> threads){
 		this.threads = threads;
 	}
 	
@@ -189,6 +195,40 @@ public class LHforum extends LHclassPluginExtension implements Serializable{
 			}
 		}
 		return false;
+	}
+	
+	@Override
+	public int hashCode() {
+		int code = 0;
+		for(ForumThread thread : threads){
+			code = code + thread.hashCode();
+		}
+		return code+id.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		LHforum other = (LHforum) obj;
+		for(ForumThread thread : other.getThreads()){
+			boolean found = false;
+			for(ForumThread thread2: this.getThreads()){
+				if(thread.equals(thread2)){
+					found = true;
+				}
+			}
+			if(!found){
+				return false;
+			}else{
+				found = false;
+			}
+		}
+			return true;
 	}
 	
 

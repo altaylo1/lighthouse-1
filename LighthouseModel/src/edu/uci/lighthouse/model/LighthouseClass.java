@@ -53,8 +53,8 @@ public class LighthouseClass extends LighthouseEntity {
 	//ArrayList<LHclassPluginExtension> extensions = new ArrayList<LHclassPluginExtension>(); 
 	
 	/**@author lee*/
-	 @OneToOne(cascade = CascadeType.ALL)
-	private LHforum forum;
+	 @OneToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+	private LHforum forum = new LHforum(this.getFullyQualifiedName());
 
 	 /**@author lee*/
 		@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -63,14 +63,14 @@ public class LighthouseClass extends LighthouseEntity {
 	
 	protected LighthouseClass() {
 		this("");
-		forum = new LHforum();
+		forum = new LHforum(this.getFullyQualifiedName());
 		
 	//	loadExtensions();
 	}
 
 	public LighthouseClass(String fqn) {
 		super(fqn);
-		forum = new LHforum();
+		forum = new LHforum(this.getFullyQualifiedName());
 		
 	//	loadExtensions();
 	}

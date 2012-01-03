@@ -120,6 +120,13 @@ public class ExpertiseFigure extends CompartmentFigure {
 				if(entity instanceof LighthouseClass){
 					LighthouseClass clazz = (LighthouseClass)entity;
 
+					
+					
+					
+
+					
+					
+					
 					Set<DOIforClass> doiModel= clazz.getDoiModel();
 					for(DOIforClass doiForClass: doiModel){
 						

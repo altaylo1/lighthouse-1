@@ -21,6 +21,7 @@ import edu.uci.lighthouse.core.controller.UpdateLighthouseModel;
 import edu.uci.lighthouse.core.dbactions.push.FileEventAction;
 import edu.uci.lighthouse.core.util.ModelUtility;
 import edu.uci.lighthouse.model.LighthouseAuthor;
+import edu.uci.lighthouse.model.LighthouseClass;
 import edu.uci.lighthouse.model.LighthouseEntity;
 import edu.uci.lighthouse.model.LighthouseEvent;
 import edu.uci.lighthouse.model.LighthouseModel;
@@ -60,20 +61,19 @@ public class PersistAndUpdate implements IPersistAndUpdate{
 		ArrayList<LighthouseEvent> listOfEvents = new ArrayList<LighthouseEvent>();
 		listOfEvents.add(lh);
 
-		//Controller.getInstance().getBuffer()
-		//		.offer(new ForumAddEventAction(listOfEvents));
-		//UpdateLighthouseModel.addEvents(listOfEvents);
-		
-		
+		Controller.getInstance().getBuffer()
+				.offer(new ForumAddEventAction(listOfEvents));
 		UpdateLighthouseModel.addEvents(listOfEvents);
+		
+		
+		//UpdateLighthouseModel.addEvents(listOfEvents);
 		
 		//LighthouseModelManager  mm = new LighthouseModelManager(LighthouseModel.getInstance());
 		//mm.addEvent(lh);
 		
 		ModelUtility.fireModificationsToUI(listOfEvents);
 		
-		Controller.getInstance().getBuffer()
-				.offer(new ForumAddEventAction(listOfEvents));
+
 		
 		//FileEventAction fileEventAction = new FileEventAction(listOfEvents);
 		//Controller.getInstance().getBuffer().offer(fileEventAction);
@@ -85,6 +85,7 @@ public class PersistAndUpdate implements IPersistAndUpdate{
 		
 		// refresh locally
 		GraphUtils.rebuildFigureForEntity(getEntity());
+		
 	}
 
 
