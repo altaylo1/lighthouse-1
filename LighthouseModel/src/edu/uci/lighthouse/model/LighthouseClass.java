@@ -39,6 +39,7 @@ import org.hibernate.cfg.Environment;
 import edu.uci.lighthouse.LHmodelExtensions.ClassPluginLoader;
 import edu.uci.lighthouse.LHmodelExtensions.LHclassPluginExtension;
 import edu.uci.lighthouse.model.QAforums.LHforum;
+import edu.uci.lighthouse.model.QAforums.Post;
 import edu.uci.lighthouse.model.expertise.DOIforClass;
 
 
@@ -116,6 +117,38 @@ public class LighthouseClass extends LighthouseEntity {
 
 	public Set<DOIforClass> getDoiModel() {
 		return doiModel;
+	}
+	
+	/**
+	 * returns ascending order by interest
+	 * @return
+	 */
+	public ArrayList<DOIforClass> getSortedDoiModel(){
+		
+		int i;
+		int min;
+
+		ArrayList<DOIforClass> sortedDoi = new ArrayList<DOIforClass>();
+		sortedDoi.addAll(this.doiModel);
+
+		int size = sortedDoi.size();
+		
+		for (i = 0; i < size; i++) {
+			min = i;
+			for (int j = i + 1; j < size; j++) {
+				if (sortedDoi.get(j).getInterest()
+						< sortedDoi.get(min).getInterest()) {
+					min = j;
+				}
+			}
+
+			DOIforClass temp = sortedDoi.get(i);
+			sortedDoi.set(i, sortedDoi.get(min));
+			sortedDoi.set(min, temp);
+		}
+
+		return sortedDoi;
+		
 	}
 	
 	

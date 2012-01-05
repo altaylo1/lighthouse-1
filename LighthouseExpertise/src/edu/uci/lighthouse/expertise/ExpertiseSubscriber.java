@@ -10,6 +10,8 @@ import edu.uci.lighthouse.core.dbactions.OpenFileAction;
 import edu.uci.lighthouse.core.dbactions.SaveAuthorAction;
 import edu.uci.lighthouse.core.dbactions.push.OpenEventAction;
 import edu.uci.lighthouse.core.util.ModelUtility;
+import edu.uci.lighthouse.model.ChangeNotification;
+import edu.uci.lighthouse.model.CloseNotification;
 import edu.uci.lighthouse.model.INotification;
 import edu.uci.lighthouse.model.INotificationSubscriber;
 import edu.uci.lighthouse.model.LighthouseAuthor;
@@ -27,7 +29,42 @@ public class ExpertiseSubscriber implements INotificationSubscriber {
 	@Override
 	public void receive(INotification notification) {
 
-		if (notification instanceof OpenNotification) {
+		if(notification instanceof ChangeNotification){
+			ChangeNotification changeNotification = (ChangeNotification)notification;
+			
+			LighthouseModelManager manager = new LighthouseModelManager(
+					LighthouseModel.getInstance());
+			
+			LighthouseClass clazz = (LighthouseClass) manager
+					.getEntity(changeNotification.getClassName());
+			
+			if (clazz != null) {
+				LighthouseAuthor author = ModelUtility.getAuthor();
+				
+				clazz.addToInterest(author,3);
+				
+				Controller.getInstance().getBuffer()
+						.offer(new OpenFileAction(clazz));
+
+				LighthouseEvent lh = new LighthouseEvent(
+						LighthouseEvent.TYPE.CUSTOM, author, clazz);
+
+				ArrayList<LighthouseEvent> listOfEvents = new ArrayList<LighthouseEvent>();
+				listOfEvents.add(lh);
+				
+				UpdateLighthouseModel.addEvents(listOfEvents);
+				ModelUtility.fireModificationsToUI(listOfEvents);
+
+				OpenEventAction openEventAction = new OpenEventAction(
+						listOfEvents);
+								
+				Controller.getInstance().getBuffer().offer(openEventAction);
+				
+				GraphUtils.rebuildFigureForEntity(clazz);
+			}
+			
+		}
+		else if (notification instanceof OpenNotification) {
 			OpenNotification openNotification = (OpenNotification)notification;
 			
 			LighthouseModelManager manager = new LighthouseModelManager(
@@ -39,13 +76,10 @@ public class ExpertiseSubscriber implements INotificationSubscriber {
 			if (clazz != null) {
 				LighthouseAuthor author = ModelUtility.getAuthor();
 				
-				clazz.addToInterest(author,1);
-
-				
+				clazz.addToInterest(author,2);
 
 				Controller.getInstance().getBuffer()
 						.offer(new OpenFileAction(clazz));
-
 
 				LighthouseEvent lh = new LighthouseEvent(
 						LighthouseEvent.TYPE.CUSTOM, author, clazz);
@@ -56,14 +90,45 @@ public class ExpertiseSubscriber implements INotificationSubscriber {
 				UpdateLighthouseModel.addEvents(listOfEvents);
 				ModelUtility.fireModificationsToUI(listOfEvents);
 				
-				
-
 				OpenEventAction openEventAction = new OpenEventAction(
 						listOfEvents);
 								
 				Controller.getInstance().getBuffer().offer(openEventAction);
 
+				GraphUtils.rebuildFigureForEntity(clazz);
+
+			}
+		}else if (notification instanceof CloseNotification) {
+			CloseNotification closeNotification = (CloseNotification)notification;
+			
+			LighthouseModelManager manager = new LighthouseModelManager(
+					LighthouseModel.getInstance());
+			
+			LighthouseClass clazz = (LighthouseClass) manager
+					.getEntity(closeNotification.getClassName());
+			
+			if (clazz != null) {
+				LighthouseAuthor author = ModelUtility.getAuthor();
 				
+				clazz.addToInterest(author,-1);
+
+				Controller.getInstance().getBuffer()
+						.offer(new OpenFileAction(clazz));
+
+				LighthouseEvent lh = new LighthouseEvent(
+						LighthouseEvent.TYPE.CUSTOM, author, clazz);
+
+				ArrayList<LighthouseEvent> listOfEvents = new ArrayList<LighthouseEvent>();
+				listOfEvents.add(lh);
+				
+				UpdateLighthouseModel.addEvents(listOfEvents);
+				ModelUtility.fireModificationsToUI(listOfEvents);
+				
+				OpenEventAction openEventAction = new OpenEventAction(
+						listOfEvents);
+								
+				Controller.getInstance().getBuffer().offer(openEventAction);
+
 				GraphUtils.rebuildFigureForEntity(clazz);
 
 			}

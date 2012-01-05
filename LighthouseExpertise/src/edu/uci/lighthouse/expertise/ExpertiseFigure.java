@@ -127,10 +127,10 @@ public class ExpertiseFigure extends CompartmentFigure {
 					
 					
 					
-					Set<DOIforClass> doiModel= clazz.getDoiModel();
-					for(DOIforClass doiForClass: doiModel){
+					ArrayList<DOIforClass> doiModel= clazz.getSortedDoiModel();
+					for(int i = doiModel.size()-1; i>= 0; i--){
 						
-						
+						DOIforClass doiForClass = doiModel.get(i);
 						
 						String name = doiForClass.getAuthorname();
 						int interest = doiForClass.getInterest();
@@ -178,7 +178,7 @@ public class ExpertiseFigure extends CompartmentFigure {
 			Label nameLabel = new Label(" "+name);
 			this.add(nameLabel);
 			
-			Label interestLabel = new Label("" +interest);
+			Label interestLabel = new Label(": " +interest);
 			this.add(interestLabel);
 
 		
@@ -187,14 +187,17 @@ public class ExpertiseFigure extends CompartmentFigure {
 	}
 	
 	private class ExpertisePanel extends Panel {
-		private FlowLayout ExpertisePanel_layout;
+		private GridLayout ExpertisePanel_layout;
 
 		public ExpertisePanel() {
 			
 			
-			ExpertisePanel_layout = new FlowLayout();
-			ExpertisePanel_layout.setMajorAlignment(FlowLayout.ALIGN_LEFTTOP);
-			ExpertisePanel_layout.setMinorSpacing(25);
+			ExpertisePanel_layout = new GridLayout();
+			ExpertisePanel_layout.horizontalSpacing = 0;
+			ExpertisePanel_layout.verticalSpacing = 0;
+			ExpertisePanel_layout.numColumns = 1;
+			ExpertisePanel_layout.marginHeight = 0;
+			ExpertisePanel_layout.marginWidth = 0;
 			//this.setBackgroundColor(ColorConstants.black);
 			
 			setLayoutManager(ExpertisePanel_layout);

@@ -68,6 +68,8 @@ import edu.uci.lighthouse.core.util.WorkbenchUtility;
 
 
 
+import edu.uci.lighthouse.model.ChangeNotification;
+import edu.uci.lighthouse.model.CloseNotification;
 import edu.uci.lighthouse.model.INotificationSubscriber;
 import edu.uci.lighthouse.model.LighthouseAuthor;
 import edu.uci.lighthouse.model.LighthouseClass;
@@ -148,7 +150,7 @@ IPluginListener, IPreferencesChangeListener /*, Runnable, IPropertyChangeListene
 	
 	@Override
 	public void open(final IFile iFile, boolean hasErrors) {
-		
+		//Lee 
 		String className = ModelUtility.getClassFullyQualifiedName(iFile);
 		for(INotificationSubscriber subscriber: this.getInstance().getNotificatoinSubscribers()){
 			
@@ -162,7 +164,13 @@ IPluginListener, IPreferencesChangeListener /*, Runnable, IPropertyChangeListene
 
 	@Override
 	public void close(IFile iFile, boolean hasErrors) {
-		// DO NOTHING
+		//Lee 
+		String className = ModelUtility.getClassFullyQualifiedName(iFile);
+		for(INotificationSubscriber subscriber: this.getInstance().getNotificatoinSubscribers()){
+			
+			CloseNotification notification = new CloseNotification(className);
+			subscriber.receive(notification);
+		}
 	}
 
 	@Override
@@ -181,6 +189,13 @@ IPluginListener, IPreferencesChangeListener /*, Runnable, IPropertyChangeListene
 					logger.error(e, e);
 				}
 			}
+		}
+		//Lee 
+		String className = ModelUtility.getClassFullyQualifiedName(iFile);
+		for(INotificationSubscriber subscriber: this.getInstance().getNotificatoinSubscribers()){
+			
+			ChangeNotification notification = new ChangeNotification(className);
+			subscriber.receive(notification);
 		}
 	}
 
