@@ -60,6 +60,9 @@ public class LighthouseClass extends LighthouseEntity {
 	 /**@author lee*/
 		@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 		private Set<DOIforClass> doiModel = new HashSet<DOIforClass>();
+		
+		@CollectionOfElements 
+		private Set<String> tags = new HashSet<String>();
 	
 	
 	protected LighthouseClass() {
@@ -193,5 +196,21 @@ public class LighthouseClass extends LighthouseEntity {
 		return 0;
 	}
 
+	public void setTags(Set<String> tags) {
+		this.tags = tags;
+	}
+
+	public Set<String> getTags() {
+		return tags;
+	}
+
+	public void addTag(String tag){
+		this.tags.add(tag);
+	}
+	
+	public void removeTag(String tag){
+		this.tags.remove(tag);
+		
+	}
 	
 }
