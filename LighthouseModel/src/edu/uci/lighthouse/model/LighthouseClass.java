@@ -61,7 +61,7 @@ public class LighthouseClass extends LighthouseEntity {
 		@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 		private Set<DOIforClass> doiModel = new HashSet<DOIforClass>();
 		
-		@CollectionOfElements (fetch = FetchType.EAGER)
+		@CollectionOfElements
 		private Set<String> tags = new HashSet<String>();
 	
 	
