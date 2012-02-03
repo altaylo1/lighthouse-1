@@ -66,6 +66,7 @@ public class LighthouseQAEventSubscriber  implements ISubscriber{
 							theClazz.setForum(forum);
 							//TEMPORARY!!!!
 							theClazz.setDoiModel(((LighthouseClass)entity).getDoiModel());
+							theClazz.setTags(((LighthouseClass)entity).getTags());
 						}
 						System.out.println("[Rebuilding figure]");
 						//rebuild figure

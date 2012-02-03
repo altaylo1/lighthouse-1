@@ -21,10 +21,18 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
+import edu.uci.lighthouse.core.controller.Controller;
+import edu.uci.lighthouse.core.controller.UpdateLighthouseModel;
+import edu.uci.lighthouse.core.dbactions.OpenFileAction;
+import edu.uci.lighthouse.core.dbactions.push.OpenEventAction;
+import edu.uci.lighthouse.core.util.ModelUtility;
+import edu.uci.lighthouse.model.LighthouseAuthor;
 import edu.uci.lighthouse.model.LighthouseClass;
 import edu.uci.lighthouse.model.LighthouseEntity;
+import edu.uci.lighthouse.model.LighthouseEvent;
 import edu.uci.lighthouse.ui.figures.CompartmentFigure;
 import edu.uci.lighthouse.ui.figures.ILighthouseClassFigure.MODE;
+import edu.uci.lighthouse.ui.utils.GraphUtils;
 
 import org.eclipse.draw2d.MouseListener;
 
@@ -52,14 +60,14 @@ public class TagPluginFigure extends CompartmentFigure {
 		imageFigure.addMouseListener(new TagMouseListener());
 		tagPanel = new TagPanel();
 		GridLayout layout1 = new GridLayout();
-		//layout.horizontalSpacing = 0;
-		//layout.verticalSpacing = 0;
-		layout1.numColumns = NUM_COLUMNS;	
-		
-		//layout.marginHeight = 0;
-		//layout.marginWidth = 0; 
+		// layout.horizontalSpacing = 0;
+		// layout.verticalSpacing = 0;
+		layout1.numColumns = NUM_COLUMNS;
+
+		// layout.marginHeight = 0;
+		// layout.marginWidth = 0;
 		tagPanel.setLayoutManager(layout1);
-		
+
 		this.add(tagPanel);
 
 	}
@@ -67,6 +75,27 @@ public class TagPluginFigure extends CompartmentFigure {
 	@Override
 	public boolean isVisible(MODE mode) {
 		return true;
+	}
+
+	private void saveTagData(LighthouseClass clazz) {
+		LighthouseAuthor author = ModelUtility.getAuthor();
+		
+		Controller.getInstance().getBuffer().offer(new TagUpdateAction(clazz));
+
+		LighthouseEvent lh = new LighthouseEvent(LighthouseEvent.TYPE.CUSTOM,
+				author, clazz);
+
+		ArrayList<LighthouseEvent> listOfEvents = new ArrayList<LighthouseEvent>();
+		listOfEvents.add(lh);
+
+		UpdateLighthouseModel.addEvents(listOfEvents);
+		ModelUtility.fireModificationsToUI(listOfEvents);
+
+		TagUpdateEventAction tagEventAction = new TagUpdateEventAction(listOfEvents);
+
+		Controller.getInstance().getBuffer().offer(tagEventAction);
+
+		GraphUtils.rebuildFigureForEntity(clazz);
 	}
 
 	@Override
@@ -120,6 +149,7 @@ public class TagPluginFigure extends CompartmentFigure {
 				this.add(nameLabel);
 				// clazz add
 				clazz.addTag(tagName);
+				saveTagData(clazz);
 			}
 		}
 
@@ -130,6 +160,7 @@ public class TagPluginFigure extends CompartmentFigure {
 			tagLabels.remove(tagName);
 			// clazz remove
 			clazz.removeTag(tagName);
+			saveTagData(clazz);
 		}
 
 		/**
@@ -151,8 +182,9 @@ public class TagPluginFigure extends CompartmentFigure {
 				// clazz modify
 				clazz.removeTag(tagName);
 				clazz.addTag(newTagName);
-
+				saveTagData(clazz);
 			}
+		
 		}
 
 	}
@@ -190,6 +222,7 @@ public class TagPluginFigure extends CompartmentFigure {
 		org.eclipse.swt.widgets.Button cancelButton;
 		org.eclipse.swt.widgets.Text textBox;
 		org.eclipse.swt.widgets.List tagList;
+
 		public SWTDialog(Shell parent, int style) {
 			super(parent, style);
 		}
@@ -219,14 +252,11 @@ public class TagPluginFigure extends CompartmentFigure {
 			gridData.verticalAlignment = GridData.FILL;
 
 			// List of tags
-			tagList = new org.eclipse.swt.widgets.List(
-					shell, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL);
+			tagList = new org.eclipse.swt.widgets.List(shell, SWT.BORDER
+					| SWT.MULTI | SWT.V_SCROLL);
 			tagList.setLayoutData(gridData);
-			tagList.addListener(SWT.Selection , new ListListener());
-			
-			
-			
-			
+			tagList.addListener(SWT.Selection, new ListListener());
+
 			for (String tag : tags) {
 				tagList.add(tag);
 			}
@@ -243,13 +273,11 @@ public class TagPluginFigure extends CompartmentFigure {
 			addButton.setText("Add");
 			addButton.addMouseListener(listener);
 
-			removeButton = new org.eclipse.swt.widgets.Button(
-					shell, 0);
+			removeButton = new org.eclipse.swt.widgets.Button(shell, 0);
 			removeButton.setText("Remove");
 			removeButton.addMouseListener(listener);
 
-			modifyButton = new org.eclipse.swt.widgets.Button(
-					shell, 0);
+			modifyButton = new org.eclipse.swt.widgets.Button(shell, 0);
 			modifyButton.setText("Modify");
 			modifyButton.addMouseListener(listener);
 
@@ -265,15 +293,15 @@ public class TagPluginFigure extends CompartmentFigure {
 			}
 			return result;
 		}
-		
-		private class ListListener implements Listener{
+
+		private class ListListener implements Listener {
 
 			@Override
 			public void handleEvent(Event event) {
 				textBox.setText(tagList.getSelection()[0]);
-				
+
 			}
-			
+
 		}
 
 		private class TagButtonListener implements
@@ -292,8 +320,7 @@ public class TagPluginFigure extends CompartmentFigure {
 
 			@Override
 			public void mouseUp(org.eclipse.swt.events.MouseEvent e) {
-				
-				
+
 				if (e.getSource() == addButton) {
 					result = textBox.getText();
 					tagPanel.addTag(result, clazz);
@@ -308,7 +335,7 @@ public class TagPluginFigure extends CompartmentFigure {
 
 				} else if (e.getSource() == modifyButton) {
 					result = textBox.getText();
-					 tagPanel.modifyTag(tagList.getSelection()[0],result,clazz);
+					tagPanel.modifyTag(tagList.getSelection()[0], result, clazz);
 					textBox.setText("");
 					shell.close();
 
