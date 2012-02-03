@@ -51,6 +51,15 @@ public class TagPluginFigure extends CompartmentFigure {
 
 		imageFigure.addMouseListener(new TagMouseListener());
 		tagPanel = new TagPanel();
+		GridLayout layout1 = new GridLayout();
+		//layout.horizontalSpacing = 0;
+		//layout.verticalSpacing = 0;
+		layout1.numColumns = NUM_COLUMNS;	
+		
+		//layout.marginHeight = 0;
+		//layout.marginWidth = 0; 
+		tagPanel.setLayoutManager(layout1);
+		
 		this.add(tagPanel);
 
 	}
@@ -286,7 +295,7 @@ public class TagPluginFigure extends CompartmentFigure {
 				
 				
 				if (e.getSource() == addButton) {
-					result = tagList.getSelection()[0];
+					result = textBox.getText();
 					tagPanel.addTag(result, clazz);
 					textBox.setText("");
 					shell.close();
