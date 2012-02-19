@@ -109,6 +109,8 @@ public class ExpertiseSubscriber implements INotificationSubscriber {
 			
 			if (clazz != null) {
 				LighthouseAuthor author = ModelUtility.getAuthor();
+				if(clazz.getInterest(author) > 0){
+			
 				
 				clazz.addToInterest(author,-1);
 
@@ -130,7 +132,7 @@ public class ExpertiseSubscriber implements INotificationSubscriber {
 				Controller.getInstance().getBuffer().offer(openEventAction);
 
 				GraphUtils.rebuildFigureForEntity(clazz);
-
+				}
 			}
 		}
 

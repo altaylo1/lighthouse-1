@@ -64,6 +64,14 @@ public class SoftLockFilterAction extends PluginAction implements IMenuCreator{
 			cachedActions.put(name1, action);
 		}
 		result.add(action);
+		
+		String name2 = "not watched";
+		FilterAction action2 = cachedActions.get(name2);
+		if (action2 == null) {
+			action2 = new FilterAction(name2, new NotWatchingFilter());
+			cachedActions.put(name2, action2);
+		}
+		result.add(action2);
 	
 	return result;
 }
