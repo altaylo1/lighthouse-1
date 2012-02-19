@@ -120,7 +120,7 @@ public abstract class AbstractUmlBoxFigure extends Panel implements ILighthouseC
 			LighthouseModel model = LighthouseModel.getInstance();
 
 			// Populate class events
-			populateEvents(this, model.getEvents(umlClass));
+			populateEvents(this, model.getEvents(umlClass),false);
 
 			if (level == MODE.FOUR || level == MODE.THREE) {
 				// Insert class separator
@@ -211,7 +211,7 @@ public abstract class AbstractUmlBoxFigure extends Panel implements ILighthouseC
 
 					add(label);
 					fig2entityMap.put(label, e[i]);
-					populateEvents(this, events);
+					populateEvents(this, events,true);
 
 					// Events Separator
 					if (level == MODE.FOUR) {
@@ -248,17 +248,32 @@ public abstract class AbstractUmlBoxFigure extends Panel implements ILighthouseC
 		return result;
 	}
 
-	private void populateEvents(IFigure fig, Collection<LighthouseEvent> events) {
+	private void populateEvents(IFigure fig, Collection<LighthouseEvent> events, boolean authorFlag) {
+		/**
+		 * @author lee
+		 * before to the author edit history was overcrowding the class header in the
+		 * uml box
+		 */
+		if(!authorFlag){
+			fig.add(new Label());
+			return;
+		}
+			
+		
 		if (events.size() > 0) {
 			LighthouseEvent[] evts = events.toArray(new LighthouseEvent[0]);
 			Label label = null;
 
 			for (int i = 0; i < evts.length; i++) {
+				
 				if (!filterEvent(evts[i])) {
+
 					label = new Label(evts[i].getAuthor().getName(),
 							getEventIcon(evts[i]));
+					
 					label.setBorder(new MarginBorder(0, 4, 0, 2));
 					fig.add(label);
+
 
 					label = new Label();
 					fig.add(label);
