@@ -7,6 +7,13 @@
             class="lighthousesoftlocks.SoftLockFigure">
       </compartment>
    </extension>
+   
+      <extension
+         point="edu.uci.lighthouse.views.ui.views.actions.pluginactions">
+      <lhAction
+            class="lighthousesoftlocks.SoftLockFilterAction">
+      </lhAction>
+   </extension>
 
 
 </plugin>
