@@ -30,6 +30,8 @@ import javax.persistence.MapKey;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import org.hibernate.annotations.CollectionOfElements;
+
 
 import edu.uci.lighthouse.model.QAforums.Post;
 import edu.uci.lighthouse.model.expertise.DOIforClass;
@@ -44,6 +46,7 @@ public class LighthouseAuthor implements Serializable{
 	
 	@Id
 	private String name;
+	
 
 	 
 	public LighthouseAuthor(String name) {
@@ -93,6 +96,7 @@ public class LighthouseAuthor implements Serializable{
 			return false;
 		return true;
 	}
+
 
 
 

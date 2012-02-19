@@ -63,6 +63,9 @@ public class LighthouseClass extends LighthouseEntity {
 		
 		@CollectionOfElements(fetch = FetchType.EAGER)
 		private Set<String> tags = new HashSet<String>();
+		
+		@CollectionOfElements(fetch = FetchType.EAGER)
+		private Set<String> authorsWatching = new HashSet<String>();
 	
 	
 	protected LighthouseClass() {
@@ -210,6 +213,26 @@ public class LighthouseClass extends LighthouseEntity {
 	
 	public void removeTag(String tag){
 		this.tags.remove(tag);
+		
+	}
+	
+	public void setAuthorsWatching(Set<String> softLockedClasses) {
+		this.authorsWatching = softLockedClasses;
+	}
+
+	public Set<String> getAuthorsWatching() {
+		if(authorsWatching == null)
+			authorsWatching = new HashSet<String>();
+		
+		return authorsWatching;
+	}
+
+	public void addAuthorWatching(String authorName){
+		this.authorsWatching.add(authorName);
+	}
+
+	public void removeAuthorWatching(String authorName) {
+		this.authorsWatching.remove(authorName);
 		
 	}
 	
