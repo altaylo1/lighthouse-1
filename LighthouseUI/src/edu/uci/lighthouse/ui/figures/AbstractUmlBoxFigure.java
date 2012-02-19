@@ -56,6 +56,7 @@ import edu.uci.lighthouse.ui.swt.util.Icons;
 import edu.uci.lighthouse.ui.swt.util.ImageFactory;
 import edu.uci.lighthouse.ui.views.FilterManager;
 import edu.uci.lighthouse.views.filters.IClassFilter;
+import edu.uci.lighthouse.views.filters.ICompartmentFilter;
 
 public abstract class AbstractUmlBoxFigure extends Panel implements ILighthouseClassFigure{
 	
@@ -474,13 +475,23 @@ public abstract class AbstractUmlBoxFigure extends Panel implements ILighthouseC
 				final Object o = e.createExecutableExtension("class");
 				if (o instanceof CompartmentFigure) {
 					CompartmentFigure fig = (CompartmentFigure) o;
-					fig.setUmlClass(umlClass);
-					if (fig.isVisible(currentLevel)) {
-						insertSeparator(this);
-						fig.populate(currentLevel);
-						GridData data = new GridData(SWT.FILL,SWT.FILL,true,true);
-						data.horizontalSpan = 2;
-						add(fig, data);	
+					Collection<ICompartmentFilter> compartmentFilters = 
+							FilterManager.getInstance().getCompartmentFilters();
+					boolean filterOut = false;
+					for(ICompartmentFilter filter: compartmentFilters){
+						if(!filter.isVisble(fig.getClass())){
+							filterOut = true;
+						}
+					}
+					if(!filterOut){
+						fig.setUmlClass(umlClass);
+						if (fig.isVisible(currentLevel)) {
+							insertSeparator(this);
+							fig.populate(currentLevel);
+							GridData data = new GridData(SWT.FILL,SWT.FILL,true,true);
+							data.horizontalSpan = 2;
+							add(fig, data);	
+						}
 					}
 				}
 			}

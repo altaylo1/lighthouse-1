@@ -13,9 +13,11 @@
 *******************************************************************************/
 package edu.uci.lighthouse.ui.views;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.eclipse.draw2d.Animation;
@@ -26,11 +28,14 @@ import org.eclipse.zest.core.widgets.GraphNode;
 
 import edu.uci.lighthouse.ui.utils.GraphUtils;
 import edu.uci.lighthouse.views.filters.IClassFilter;
+import edu.uci.lighthouse.views.filters.ICompartmentFilter;
 
 public class FilterManager {
 
 	private StructuredViewer viewer;
 	private Collection<IClassFilter> classFilters = new LinkedList<IClassFilter>();
+	/**@author lee*/
+	private Collection<ICompartmentFilter> compartmentFilters = new ArrayList<ICompartmentFilter>();
 	private static FilterManager instance;
 	
 	private static Logger logger = Logger.getLogger(FilterManager.class);
@@ -39,7 +44,32 @@ public class FilterManager {
 		this.viewer = viewer;
 		instance = this;
 	}
+	
+	/**
+	 * @author lee
+	 * @param filter
+	 */
+	public void addCompartmentFilter(ICompartmentFilter filter){
+		if(!compartmentFilters.contains(filter)){
+			compartmentFilters.add(filter);
+			refreshAllFigures();
+		}
+	}
 
+	public void removeCompartmentFilter(ICompartmentFilter filter){
+		if (compartmentFilters.remove(filter)){
+			refreshAllFigures();
+		}
+	}
+	
+	/**
+	 * @author lee
+	 * @return
+	 */
+	public Collection<ICompartmentFilter> getCompartmentFilters(){
+		return compartmentFilters;
+	}
+	
 	public void addClassFilter(IClassFilter filter){
 		if (!classFilters.contains(filter)) {
 			classFilters.add(filter);

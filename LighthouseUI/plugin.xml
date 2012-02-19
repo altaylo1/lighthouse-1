@@ -32,5 +32,11 @@
             file="contexts.xml">
       </contexts>
    </extension>
+   <extension
+         point="edu.uci.lighthouse.views.ui.views.actions.pluginactions">
+      <lhAction
+            class="edu.uci.lighthouse.ui.views.actions.FilterByPlugin">
+      </lhAction>
+   </extension>
 
 </plugin>
