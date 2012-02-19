@@ -67,6 +67,12 @@ public class ExpertiseFigure extends CompartmentFigure {
 	private ExpertisePanel panel;
 	
 	static{
+		LighthouseExpertiseEventSubscriber LighthouseEventsubscriber = new LighthouseExpertiseEventSubscriber();
+		Controller.getInstance().subscribeToLighthouseEvents(LighthouseEventsubscriber);
+		}
+		
+	
+	static{
 		ExpertiseSubscriber subscriber = new ExpertiseSubscriber();
 		Controller.getInstance().addNotificationSubscriber(subscriber);
 		}

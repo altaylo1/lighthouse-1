@@ -42,6 +42,11 @@ public class TagPluginFigure extends CompartmentFigure {
 	Set<String> tags = new HashSet<String>();
 	LighthouseClass clazz = null;
 
+	static{
+		LighthouseTagEventSubscriber LighthouseEventsubscriber = new LighthouseTagEventSubscriber();
+		Controller.getInstance().subscribeToLighthouseEvents(LighthouseEventsubscriber);
+		}
+	
 	public TagPluginFigure() {
 		GridLayout layout = new GridLayout();
 		layout.horizontalSpacing = 0;

@@ -1,28 +1,6 @@
-/*******************************************************************************
-* Copyright (c) {2009,2011} {Software Design and Collaboration Laboratory (SDCL)
-*				, University of California, Irvine}.
-* All rights reserved. This program and the accompanying materials
-* are made available under the terms of the Eclipse Public License v1.0
-* which accompanies this distribution, and is available at
-* http://www.eclipse.org/legal/epl-v10.html
-*
-* Contributors:
-*    {Software Design and Collaboration Laboratory (SDCL)
-*	, University of California, Irvine}
-*			- initial API and implementation and/or initial documentation
-*******************************************************************************/
-package edu.uci.lighthouse.lighthouseqandathreads;
+package edu.uci.lighthouse.expertise;
 
-import java.io.Serializable;
 import java.util.List;
-import java.util.Observable;
-
-import javax.persistence.Entity;
-
-import org.eclipse.ui.IViewReference;
-import org.eclipse.ui.PlatformUI;
-
-///import org.eclipse.zest.core.widgets.GraphNode;
 
 import edu.uci.lighthouse.core.data.ISubscriber;
 import edu.uci.lighthouse.model.LighthouseClass;
@@ -31,12 +9,9 @@ import edu.uci.lighthouse.model.LighthouseEvent;
 import edu.uci.lighthouse.model.LighthouseModel;
 import edu.uci.lighthouse.model.LighthouseModelManager;
 import edu.uci.lighthouse.model.QAforums.LHforum;
-//import edu.uci.lighthouse.ui.utils.GraphUtils;
 import edu.uci.lighthouse.ui.utils.GraphUtils;
-import edu.uci.lighthouse.ui.views.EmergingDesignView;
 
-
-public class LighthouseQAEventSubscriber  implements ISubscriber{
+public class LighthouseExpertiseEventSubscriber implements ISubscriber{
 
 	/**
 	 * 
@@ -60,11 +35,7 @@ public class LighthouseQAEventSubscriber  implements ISubscriber{
 						if(clazz instanceof LighthouseClass){
 							LighthouseClass theClazz = (LighthouseClass)clazz;
 							
-							LHforum forum = ((LighthouseClass)entity).getForum();
-							System.out.println("# of threads from event: "+forum.getThreads().size());
-							
-							theClazz.setForum(forum);
-
+							theClazz.setDoiModel(((LighthouseClass)entity).getDoiModel());
 						}
 						System.out.println("[Rebuilding figure]");
 						//rebuild figure
