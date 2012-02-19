@@ -7,6 +7,12 @@
             class="lighthousetagplugin.TagPluginFigure">
       </compartment>
    </extension>
+   <extension
+         point="edu.uci.lighthouse.views.ui.views.actions.pluginactions">
+      <lhAction
+            class="lighthousetagplugin.TagFilterAction">
+      </lhAction>
+   </extension>
    
    
 
